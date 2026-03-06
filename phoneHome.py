@@ -25,7 +25,7 @@ def is_home(retries=3, delay=5):
         if PHONE_MAC.lower() in result.stdout.lower():
             print("telephone found")
             return True
-        print("failed attempt: " + attempt)
+        print(f"failed attempt: {attempt}") 
         time.sleep(delay)
     return False
 
