@@ -22,6 +22,7 @@ def is_home(retries=3, delay=5):
         #subprocess.run(['ping', '-n', '1', PHONE_IP], capture_output=True)
         subprocess.run(['ping', '-c', '1', PHONE_IP], capture_output=True)
         result = subprocess.run(['arp', '-a'], capture_output=True, text=True)
+        print(result.stdout)
         if PHONE_MAC.lower() in result.stdout.lower():
             print("telephone found")
             return True
