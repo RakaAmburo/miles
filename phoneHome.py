@@ -22,9 +22,9 @@ def is_home(retries=3, delay=5):
     for attempt in range(retries):
         subprocess.run(['ping', PING_FLAG, '1', PHONE_IP], capture_output=True)
         result = subprocess.run(['arp', '-a'], capture_output=True, text=True)
-        print(result.stdout)
+        #print(result.stdout)
         if PHONE_MAC.lower() in result.stdout.lower():
-            print("telephone found")
+            #print("telephone found")
             return True
         print(f"failed attempt: {attempt}") 
         time.sleep(delay)
