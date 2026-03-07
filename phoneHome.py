@@ -3,6 +3,8 @@ import os
 import subprocess
 import time
 import requests
+from tools import get_logger
+logger = get_logger(__name__)
 
 load_dotenv()
 
@@ -24,9 +26,9 @@ def is_home(retries=3, delay=5):
         result = subprocess.run(['arp', '-a'], capture_output=True, text=True)
         #print(result.stdout)
         if PHONE_MAC.lower() in result.stdout.lower():
-            print("telephone found")
+            logger.info("telephone found")
             return True
-        print(f"failed attempt: {attempt}") 
+        logger.error(f"failed attempt: {attempt}") 
         time.sleep(delay)
     return False
 
