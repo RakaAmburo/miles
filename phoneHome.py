@@ -4,6 +4,8 @@ import subprocess
 import time
 import requests
 from tools import get_logger
+import sys
+
 logger = get_logger(__name__)
 
 load_dotenv()
@@ -31,6 +33,11 @@ def is_home(retries=10, delay=30):
         logger.error(f"failed attempt: {attempt}") 
         time.sleep(delay)
     return False
+
+def handle_exception(exc_type, exc_value, exc_traceback):
+    logger.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+sys.excepthook = handle_exception
 
 was_home = True
 
