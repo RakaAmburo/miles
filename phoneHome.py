@@ -5,6 +5,8 @@ import time
 import requests
 from tools import get_logger
 import sys
+import traceback
+from datetime import datetime
 
 logger = get_logger(__name__)
 
@@ -35,7 +37,9 @@ def is_home(retries=10, delay=30):
     return False
 
 def handle_exception(exc_type, exc_value, exc_traceback):
-    logger.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print(f"{timestamp} - CRITICAL - Unhandled exception", file=sys.stderr)
+    traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stderr)
 
 sys.excepthook = handle_exception
 
