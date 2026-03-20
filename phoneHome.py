@@ -3,10 +3,10 @@ import os
 import subprocess
 import time
 import requests
-from tools import get_logger
+from tools import get_logger, handle_exception
 import sys
-import traceback
-from datetime import datetime
+
+sys.excepthook = handle_exception
 
 logger = get_logger(__name__)
 
@@ -35,13 +35,6 @@ def is_home(retries=10, delay=30):
         logger.error(f"failed attempt: {attempt}") 
         time.sleep(delay)
     return False
-
-def handle_exception(exc_type, exc_value, exc_traceback):
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(f"{timestamp} - CRITICAL - Unhandled exception", file=sys.stderr)
-    traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stderr)
-
-sys.excepthook = handle_exception
 
 was_home = True
 
