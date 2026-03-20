@@ -4,6 +4,11 @@ module.exports = {
       name: "phone-tracker",
       script: "phoneHome.py",
       interpreter: "/home/pablo/repos/miles/.venv/bin/python3"
+    },
+    {
+      name: "security-controller",
+      script: "security_controller.py",
+      interpreter: "/home/pablo/repos/miles/.venv/bin/python3"
     }
   ]
 }
