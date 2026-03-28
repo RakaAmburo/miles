@@ -4,6 +4,7 @@ from imouapi.api import ImouAPIClient
 from imouapi.device import ImouDiscoverService
 import os
 from tools import get_logger
+from step_tracker import Trackers
 
 logger = get_logger(__name__)
 
@@ -16,7 +17,7 @@ async def enable_camera(sensor):
 async def disable_camera(sensor):
     await sensor.async_turn_on()  # closeCamera=ON means camera OFF
 
-async def control_cameras(enable: bool):
+async def control_cameras(enable: bool, trcks: Trackers):
     async with aiohttp.ClientSession() as session:
         api_client = ImouAPIClient(APP_ID, APP_SECRET, session)
         devices = await ImouDiscoverService(api_client).async_discover_devices()
@@ -34,9 +35,11 @@ async def control_cameras(enable: bool):
                     else:
                         await disable_camera(sensor)
                     logger.info(f"Camera {name}: {'ON' if enable else 'OFF'}")
+                    trcks.grained.complete(f"Camera {name}")
+        trcks.grouped.complete("uomi-cams")
 
-def uomis_on():
-    asyncio.run(control_cameras(enable=True))
+def uomis_on(trackers: Trackers):
+    asyncio.run(control_cameras(enable=True, trcks=trackers))
 
-def uomis_off():
-    asyncio.run(control_cameras(enable=False))
+def uomis_off(trackers: Trackers):
+    asyncio.run(control_cameras(enable=False, trcks=trackers))

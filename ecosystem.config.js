@@ -28,4 +28,6 @@ module.exports = {
   ]
 }
 
-bashpm2 restart ecosystem.config.js */
+bash pm2 restart ecosystem.config.js 
+pm2 reload ecosystem.config.js
+*/

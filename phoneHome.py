@@ -5,10 +5,11 @@ import time
 import requests
 from tools import get_logger, handle_exception
 import sys
+from datetime import datetime, time
 
 sys.excepthook = handle_exception
 
-logger = get_logger(__name__)
+logger = get_logger("phone-home")
 
 load_dotenv()
 
@@ -35,6 +36,13 @@ def is_home(retries=10, delay=30):
         logger.error(f"failed attempt: {attempt}") 
         time.sleep(delay)
     return False
+
+# result = is_in_range(time(22, 30), time(8, 0))
+def is_in_range(start: time, end: time) -> bool:
+    now = datetime.now().time()
+    if start > end:  
+        return now >= start or now <= end
+    return start <= now <= end
 
 was_home = True
 
