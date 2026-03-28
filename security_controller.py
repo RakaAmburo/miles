@@ -1,8 +1,9 @@
 from dotenv import load_dotenv
+load_dotenv()
+
 import paho.mqtt.client as mqtt
 from tools import get_logger, handle_exception, send_telegram
 import sys
-load_dotenv()
 from uomi import uomis_on, uomis_off
 from step_tracker import StepTracker, Trackers
 
