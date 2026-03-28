@@ -20,8 +20,8 @@ grained_tracker = StepTracker(
 )
 grouped_steps=["uomi-cams"]
 def on_grouped_steps_complete(state):
-    print("entering on_grouped_steps_complete")
     if grained_tracker.is_completed():
+        print("entering sendt elegram")
         send_telegram(f"All steps completed — alarm {state}!")
     else:
         pending=grained_tracker.pending_steps()
