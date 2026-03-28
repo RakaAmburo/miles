@@ -25,7 +25,7 @@ def send_telegram(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     requests.post(url, json={"chat_id": CHAT_ID, "text": message})
 
-def is_home(retries=10, delay=30):
+def is_home(retries=14, delay=30):
     for attempt in range(retries):
         subprocess.run(['ping', PING_FLAG, '1', PHONE_IP], capture_output=True)
         result = subprocess.run(['arp', '-a'], capture_output=True, text=True)
