@@ -27,7 +27,7 @@ def on_grouped_steps_complete(state):
         pending=grained_tracker.pending_steps()
         send_telegram("⏳ Pending steps:\n" + "\n".join(f"  - {step}" for step in pending))
 grouped_tracker = StepTracker(
-    steps=grained_steps,
+    steps=grouped_steps,
     on_complete=on_grouped_steps_complete
 )
 
