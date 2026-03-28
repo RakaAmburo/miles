@@ -8,7 +8,7 @@ class StepTracker:
         self.nextState = ""
 
     def reset(self):
-        self.steps = {step: False for step in self.steps_list}
+        self.steps = {step: False for step in self.steps}
         self.competed = False
         self.nextState = ""
     
