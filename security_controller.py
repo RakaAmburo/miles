@@ -12,7 +12,7 @@ sys.excepthook = handle_exception
 logger = get_logger("sec_cont")
 
 grained_steps=["Camera Living Room", "Camera Work"]
-def on_grainded_steps_complete():
+def on_grainded_steps_complete(state):
     pass
 grained_tracker = StepTracker(
     steps=grained_steps,
