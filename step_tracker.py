@@ -20,6 +20,7 @@ class StepTracker:
             self.steps[step] = True
             print(f"Step completed: {step}")
             if all(self.steps.values()):
+                print("all completed")
                 self.on_complete(self.nextState)
                 self.competed = True
     
