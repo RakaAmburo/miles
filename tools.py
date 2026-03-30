@@ -9,10 +9,6 @@ import os
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-def send_telegram(message):
-    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    requests.post(url, json={"chat_id": CHAT_ID, "text": message})
-
 def get_logger(name):
     logging.basicConfig(
         level=logging.INFO,
@@ -20,6 +16,8 @@ def get_logger(name):
         handlers=[logging.StreamHandler(sys.stdout)]
     )
     return logging.getLogger(name)
+logger = get_logger(__name__)
+
 
 """ def handle_exception(exc_type, exc_value, exc_traceback):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -32,3 +30,9 @@ def handle_exception(exc_type, exc_value, exc_traceback):
     module = tb.filename.split("/")[-1].replace(".py", "")
     print(f"{timestamp} - {module} - CRITICAL - Unhandled exception", file=sys.stderr)
     traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stderr)
+
+def send_telegram(message):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    response = requests.post(url, json={"chat_id": CHAT_ID, "text": message})
+    if not response.ok:
+        logger.error(f"Telegram error: {response.status_code} {response.text}")

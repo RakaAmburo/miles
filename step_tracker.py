@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+from tools import get_logger
+
+logger = get_logger(__name__)
 
 class StepTracker:
     def __init__(self, steps: list, on_complete):
@@ -18,9 +21,8 @@ class StepTracker:
     def complete(self, step: str):
         if step in self.steps:
             self.steps[step] = True
-            print(f"Step completed: {step}")
+            logger.info(f"Step completed: {step}")
             if all(self.steps.values()):
-                print("all completed")
                 self.on_complete(self.nextState)
                 self.competed = True
     

@@ -13,6 +13,6 @@ def get_state(key: str) -> str:
         row = conn.execute("SELECT value FROM state WHERE key = ?", (key,)).fetchone()
         return row[0] if row else None
 
-# uso
-set_state("alarm", "ON")
-print(get_state("alarm"))  # ON
+if __name__ == "__main__":
+    #set_state("full-armed", "OFF")
+    print(get_state("full-armed"))
