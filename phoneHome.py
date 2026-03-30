@@ -1,11 +1,11 @@
 from dotenv import load_dotenv
 import os
 import subprocess
-import time
 import requests
 from tools import get_logger, handle_exception
 import sys
 from datetime import datetime, time as dt_time
+import time
 from state_mgr import get_state
 import constants as const
 
@@ -44,7 +44,7 @@ def is_full_armed():
     return state == const.ON
 
 # result = is_in_range(time(22, 30), time(8, 0))
-def is_in_range(start: time, end: dt_time) -> bool:
+def is_in_range(start: dt_time, end: dt_time) -> bool:
     now = datetime.now().time()
     if start > end:  
         return now >= start or now <= end
