@@ -13,6 +13,12 @@ def get_state(key: str) -> str:
         row = conn.execute("SELECT value FROM state WHERE key = ?", (key,)).fetchone()
         return row[0] if row else None
 
+def get_all_states() -> list[str]:
+    with sqlite3.connect(DB) as conn:
+        rows = conn.execute("SELECT key, value FROM state").fetchall()
+        return rows if rows else None
+
 if __name__ == "__main__":
     #set_state("full-armed", "OFF")
-    print(get_state("full-armed"))
+    #print(get_state("full-armed"))
+    print(get_all_states())
