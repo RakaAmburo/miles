@@ -53,7 +53,7 @@ def is_in_range(start: dt_time, end: dt_time) -> bool:
 was_home = True
 
 while True:
-    at_home = is_home() #or (is_in_range() and not full_armed())
+    at_home = (is_in_range(dt_time(22, 30), dt_time(9, 0)) and not is_full_armed()) or is_home()
     
     if was_home and not at_home:
         send_telegram("🚨 Phone left home!")

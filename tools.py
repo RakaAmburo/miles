@@ -4,7 +4,8 @@ import traceback
 from datetime import datetime
 import requests
 import os
-
+import paho.mqtt.client as mqtt
+import constants as const
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
@@ -16,6 +17,7 @@ def get_logger(name):
         handlers=[logging.StreamHandler(sys.stdout)]
     )
     return logging.getLogger(name)
+
 logger = get_logger(__name__)
 
 
@@ -36,3 +38,12 @@ def send_telegram(message):
     response = requests.post(url, json={"chat_id": CHAT_ID, "text": message})
     if not response.ok:
         logger.error(f"Telegram error: {response.status_code} {response.text}")
+
+def publish_event(topic, msg):
+    try:
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        client.connect(const.MQTT_IP, 1883)
+        client.publish(topic, msg)
+        client.disconnect()
+    except Exception as e:
+        logger.error(f"Error publishing: {e}")

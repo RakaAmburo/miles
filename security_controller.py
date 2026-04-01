@@ -6,7 +6,7 @@ from tools import get_logger, handle_exception, send_telegram
 import sys
 from uomi import uomis_on, uomis_off
 from step_tracker import StepTracker, Trackers
-
+import constants as const
 
 sys.excepthook = handle_exception
 
@@ -55,5 +55,5 @@ def on_message(client, userdata, msg):
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 client.on_connect = on_connect
 client.on_message = on_message
-client.connect("192.168.1.135", 1883)
+client.connect(const.MQTT_IP, 1883)
 client.loop_forever()

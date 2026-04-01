@@ -1,2 +1,3 @@
 FULL_ARMED="full-armed"
 ON="ON"
+MQTT_IP="192.168.1.135"
