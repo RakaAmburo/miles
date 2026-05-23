@@ -57,3 +57,16 @@ client.on_connect = on_connect
 client.on_message = on_message
 client.connect(const.MQTT_IP, 1883)
 client.loop_forever()
+
+
+""" def on_message(client, userdata, msg):
+    camara = msg.topic.split("/")[1]  # sala, entrada, etc
+    print(f"Foto de: {camara}")
+    with open(f"foto_{camara}.jpg", "wb") as f:
+        f.write(msg.payload)
+
+client = mqtt.Client()
+client.on_message = on_message
+client.connect("localhost", 1883)
+client.subscribe("cam/#")
+client.loop_forever() """
