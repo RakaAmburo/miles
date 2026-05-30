@@ -1,8 +1,7 @@
 from dotenv import load_dotenv
 import os
 import subprocess
-import requests
-from tools import get_logger, handle_exception
+from tools import get_logger, handle_exception, publish_event
 import sys
 from datetime import datetime, time as dt_time
 import time
@@ -17,15 +16,9 @@ load_dotenv()
 
 PHONE_MAC = os.getenv("PHONE_MAC")
 PHONE_IP = os.getenv("PHONE_IP")
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
 PING_FLAG = os.getenv("PING_FLAG", "-n")# win default
 
 INTERVAL = 60  # seconds
-
-def send_telegram(message):
-    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    requests.post(url, json={"chat_id": CHAT_ID, "text": message})
 
 def is_home(retries=14, delay=30):
     for attempt in range(retries):
@@ -56,10 +49,10 @@ while True:
     at_home = (is_in_range(dt_time(22, 30), dt_time(9, 0)) and not is_full_armed()) or is_home()
     
     if was_home and not at_home:
-        send_telegram("🚨 Phone left home!")
+        publish_event(const.TOPIC_MOVIL, const.OUT)
     
     if not was_home and at_home:
-        send_telegram("✅ Phone is back home!")
+        publish_event(const.TOPIC_MOVIL, const.IN)
     
     was_home = at_home
     time.sleep(INTERVAL)

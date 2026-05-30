@@ -6,6 +6,7 @@ from tools import get_logger, handle_exception, send_telegram
 import sys
 from uomi import uomis_on, uomis_off
 from step_tracker import StepTracker, Trackers
+from state_mgr import set_state
 import constants as const
 
 sys.excepthook = handle_exception
@@ -39,17 +40,33 @@ trackers = Trackers(
 def on_connect(client, userdata, flags, rc, properties):
     logger.info("Mosquito client connected")
     client.subscribe("scutum")
+    client.subscribe(const.TOPIC_MOVIL)
+    client.subscribe(const.TOPIC_FULLARMED)
 
 def on_message(client, userdata, msg):
     message = msg.payload.decode()
-    logger.info(f"Recieved: {message}")
-    if message == "ON":
-        trackers.set_state("ON")
-        uomis_on(trackers)
-    elif message == "OFF":
-        trackers.set_state("OFF")
-        uomis_off(trackers)
-    trackers.reset()
+    logger.info(f"Recieved: {msg.topic} -> {message}")
+
+    if msg.topic == const.TOPIC_FULLARMED:
+        # Actualizar estado full-armed en DB
+        set_state(const.FULL_ARMED, message)
+        logger.info(f"Full armed updated: {message}")
+        return
+
+    if msg.topic == const.TOPIC_MOVIL or msg.topic == "scutum":
+        # Normalizar: casa/movil usa in/out, scutum usa ON/OFF
+        if msg.topic == const.TOPIC_MOVIL:
+            normalized = const.ON if message == const.OUT else const.OFF
+        else:
+            normalized = message
+
+        if normalized == const.ON:
+            trackers.set_state("ON")
+            uomis_on(trackers)
+        elif normalized == const.OFF:
+            trackers.set_state("OFF")
+            uomis_off(trackers)
+        trackers.reset()
     #client.publish("respuesta", f"recibí '{mensaje}'")
 
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
